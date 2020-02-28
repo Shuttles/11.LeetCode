@@ -139,6 +139,129 @@ bool isHappy(int n){
 
 ### 题面
 
+![img](https://wx2.sinaimg.cn/mw690/005LasY6gy1gcbxeo88kvj30ou130af1.jpg)
+
+![img](https://wx1.sinaimg.cn/mw690/005LasY6gy1gcbxetocawj30os0eszld.jpg)
+
+### 我的思路
+
+只知道用快慢指针可以判断是否有环，但是两指针相遇的地方不一定是环的入口处，到这个地方就卡住了。
+
+
+
+### 题解思路
+
+原来要靠数学推导！！
+
+![img](https://wx2.sinaimg.cn/mw690/005LasY6gy1gcbxlunspyj31130u00y0.jpg)
+
+
+
+### 代码
+
+```C
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     struct ListNode *next;
+ * };
+ */
+ 
+typedef struct ListNode ListNode;
+struct ListNode *detectCycle(struct ListNode *head) {
+    if (!head) return NULL;
+    ListNode *p = head, *q = head;
+    do {
+        p = p->next;
+        q = q->next;
+        if (!q || !q->next) return NULL;
+        q = q->next;
+    } while (p != q);
+    p = head;//将p移到起点位置
+    while (p != q) {
+        p = p->next;
+        q = q->next;
+    }
+    return p;
+}
+```
+
+
+
+### 疑问
+
+如果快指针一次走3步，还能否用这个方法？
+
+
+
+## 287.寻找重复数
+
+### 题面
+
+![img](https://wx2.sinaimg.cn/mw690/005LasY6gy1gcby1np6slj30pq0qgtbr.jpg)
+
+
+
+### 我的思路
+
+真没想出来。。。尤其是如何和链表联系到一起？？
+
+
+
+### 题解思路
+
+1. 就是和环形链表2一个思路！！
+
+2. 数组下标是0~n，值是1~n，利用数组下标与值的映射(也就是函数的本质)(0不参与循环监测)。
+
+3. 如果不重复，那么由每个值作为下标映射后的那个值，这样一直映射下去，最终会停止！
+
+4. 如果有重复的数呢？
+
+   那么一定会有两个映射后的值等于同一个数，这样就形成了环！
+
+   就如下图所示！
+
+   ![img](https://wx4.sinaimg.cn/mw690/005LasY6gy1gcc0zeg8zcj30u01n0npd.jpg)
+
+这样就形成了环！！！(如果位置5上的数字是7就不行了)
+
+
+
+### 代码
+
+```C
+int findDuplicate(int* nums, int numsSize){
+    int p = nums[0], q = nums[0];
+    do {
+        p = nums[p];
+        q = nums[nums[q]];
+    } while (p != q);
+    q = nums[0];
+    
+    while (p != q) {
+         p = nums[p];
+         q = nums[q];
+    }
+    return p;
+}
+```
+
+
+
+### 总结
+
+这种解法的理论依据：
+
+1. 数组与函数的本质是一样的--都是映射！
+
+   快乐数那题用的是函数，这题用的是数组！
+
+2. 数字范围在1~n之间，这样才能每次映射到组内元素！
+
+
+
 
 
 
